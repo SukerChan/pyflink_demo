@@ -3,3 +3,4 @@
 *.zip
 flink-1.12.2
 logging_system_demo
+*.jar
