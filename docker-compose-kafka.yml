@@ -1,0 +1,25 @@
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    volumes:
+      - /data/chenyulong/docker/zk_data:/data
+
+  kafka:
+    image: wurstmeister/kafka
+    depends_on:
+      - zookeeper
+    restart: always
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.0.17:9092  # 服务器外网IP，一定要用ID
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /data/chenyulong/docker/kafka-logs:/kafka
